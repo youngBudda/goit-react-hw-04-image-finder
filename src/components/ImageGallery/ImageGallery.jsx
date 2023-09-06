@@ -13,7 +13,7 @@ const ImageGallery = ({ images, handlerClick }) => {
             alt={tags}
             modalUrl={largeImageURL}
             handlerClick={handlerClick}
-          ></ImageGalleryItem>
+          />
         );
       })}
     </StyledImageGallery>

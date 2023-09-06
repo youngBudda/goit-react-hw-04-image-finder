@@ -1,40 +1,34 @@
 import { StyledModal, StyledOverlay } from './Modal.styled';
-import { Component } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-class Modal extends Component {
-  handleKeyDown = event => {
-    if (event.code === `Escape`) {
-      this.props.onClose();
+function Modal({ onClose, modalData }) {
+  const handlerOnClick = event => {
+    if (event.target === event.currentTarget) {
+      onClose();
     }
   };
 
-  handlerOnClick = event => {
-    if (event.targe === event.currentTarget) {
-      this.props.onClose();
-    }
-  };
+  useEffect(() => {
+    const handleKeyDown = event => {
+      if (event.code === `Escape`) {
+        onClose();
+      }
+    };
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-  }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-  }
-
-  render() {
-    return (
-      <StyledOverlay onClick={this.onClick}>
-        <StyledModal>
-          <img
-            src={this.props.modalData.modalURL}
-            alt={this.props.modalData.alt}
-          />
-        </StyledModal>
-      </StyledOverlay>
-    );
-  }
+  return (
+    <StyledOverlay onClick={handlerOnClick}>
+      <StyledModal>
+        <img src={modalData.modalUrl} alt={modalData.alt} />
+      </StyledModal>
+    </StyledOverlay>
+  );
 }
 Modal.propTypes = {
   modalData: PropTypes.shape({
